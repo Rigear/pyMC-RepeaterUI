@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+
+  --vt-c-indigo: #2c3e50;
+
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+}
+
+/* semantic color variables for this project */
+:root {
+  /* Surface colors */
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-background: #f5f7fa;
+  --color-background-soft: #f8f8f8;
+  --color-background-mute: #ebeef2;
+
+  /* Text colors - WCAG AA compliant on white */
+  --color-text-primary: #111827; /* 16:1 contrast */
+  --color-text-secondary: #374151; /* 9.5:1 contrast */
+  --color-text-muted: #6b7280; /* 4.6:1 contrast */
+  --color-heading: #030712; /* 19.5:1 contrast */
+  --color-text: #374151; /* 9.5:1 contrast */
+
+  /* Border colors - 3:1 for UI components */
+  --color-border: #9ca3af; /* 2.7:1 - visible borders */
+  --color-border-subtle: #d1d5db; /* subtle dividers */
+  --color-border-hover: #6b7280; /* 4.6:1 - hover state */
+
+  /* Accent colors - accessible versions for text on white */
+  --color-primary: #0d7377; /* 5.0:1 - teal */
+  --color-secondary: #92610a; /* 5.3:1 - amber */
+  --color-accent-green: #15803d; /* 5.0:1 - green */
+  --color-accent-purple: #7c3aed; /* 5.4:1 - purple */
+  --color-accent-red: #dc2626; /* 4.6:1 - red */
+  --color-accent-cyan: #0e7490; /* 5.0:1 - cyan */
+
+  --section-gap: 160px;
+
+  /* Accent colors - background fills (light, for dark text on top) */
+  --color-primary-bg: #aae8e8;
+  --color-secondary-bg: #ffc246;
+  --color-accent-green-bg: #a5e5b6;
+  --color-accent-purple-bg: #eba0fc;
+  --color-accent-red-bg: #fb787b;
+  --color-accent-cyan-bg: #d1e6e4;
+
+  /* Badge/pill colors - inverted style (dark bg in dark mode, light bg in light mode) */
+  --color-badge-cyan-bg: #d1e6e4; /* Light teal background */
+  --color-badge-cyan-text: #0d7377; /* Dark teal text */
+  --color-badge-neutral-bg: #e5e7eb; /* Light gray background */
+  --color-badge-neutral-text: #374151; /* Dark gray text */
+
+  /* Glass card colors */
+  --color-glass-bg: rgba(255, 255, 255, 0.75);
+  --color-glass-border: rgba(0, 0, 0, 0.06);
+  --color-glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  --color-glass-green-bg: linear-gradient(
+    91deg,
+    rgba(165, 229, 182, 0.35) 1.17%,
+    rgba(165, 229, 182, 0.15) 99.82%
+  );
+  --color-glass-green-border: rgba(165, 229, 182, 0.3);
+  --color-glass-green-shadow: 0 4px 12px rgba(165, 229, 182, 0.15);
+  --color-glass-orange-bg: linear-gradient(
+    91deg,
+    rgba(245, 158, 11, 0.25) 1.17%,
+    rgba(245, 158, 11, 0.12) 99.82%
+  );
+  --color-glass-orange-border: rgba(245, 158, 11, 0.25);
+  --color-glass-orange-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+/* Dark mode */
+.dark {
+  /* Surface colors */
+  --color-surface: #0f1112;
+  --color-surface-elevated: #1a1e1f;
+  --color-background: #09090b;
+  --color-background-soft: #111314;
+  --color-background-mute: #1a1e1f;
+
+  /* Text colors */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-heading: #ffffff;
+  --color-text: #adadad;
+
+  /* Border colors */
+  --color-border: #4b4b4b;
+  --color-border-subtle: #374151;
+  --color-border-hover: #6b7280;
+
+  /* Accent colors - text/icons (same in dark, already vibrant) */
+  --color-primary: #aae8e8;
+  --color-secondary: #ffc246;
+  --color-accent-green: #a5e5b6;
+  --color-accent-purple: #eba0fc;
+  --color-accent-red: #fb787b;
+  --color-accent-cyan: #d1e6e4;
+
+  /* Accent colors - background fills */
+  --color-primary-bg: #0d7377;
+  --color-secondary-bg: #92610a;
+  --color-accent-green-bg: #15803d;
+  --color-accent-purple-bg: #7c3aed;
+  --color-accent-red-bg: #dc2626;
+  --color-accent-cyan-bg: #0e7490;
+
+  /* Badge/pill colors - inverted style (dark bg in dark mode, light bg in light mode) */
+  --color-badge-cyan-bg: #223231; /* Dark teal background */
+  --color-badge-cyan-text: #d1e6e4; /* Light teal text */
+  --color-badge-neutral-bg: #374151; /* Dark gray background */
+  --color-badge-neutral-text: #d1d5db; /* Light gray text */
+
+  /* Glass card colors */
+  --color-glass-bg: rgba(0, 0, 0, 0.4);
+  --color-glass-border: rgba(255, 255, 255, 0.05);
+  --color-glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --color-glass-green-bg: linear-gradient(
+    91deg,
+    rgba(21, 128, 61, 0.25) 1.17%,
+    rgba(21, 128, 61, 0.1) 99.82%
+  );
+  --color-glass-green-border: rgba(165, 229, 182, 0.15);
+  --color-glass-green-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --color-glass-orange-bg: linear-gradient(
+    91deg,
+    rgba(245, 158, 11, 0.25) 1.17%,
+    rgba(245, 158, 11, 0.12) 99.82%
+  );
+  --color-glass-orange-border: rgba(245, 158, 11, 0.15);
+  --color-glass-orange-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,35 @@
+@import './base.css';
+
+@import 'tailwindcss';
+
+@config '../../tailwind.config.js';
+
+@layer utilities {
+  .glass-card {
+    @apply rounded-[10px] backdrop-blur-[50px];
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    box-shadow: var(--color-glass-shadow);
+  }
+
+  .glass-card-green {
+    @apply rounded-[10px] backdrop-blur-[50px];
+    background: var(--color-glass-green-bg);
+    border: 1px solid var(--color-glass-green-border);
+    box-shadow: var(--color-glass-green-shadow);
+  }
+
+  .glass-card-orange {
+    @apply rounded-[10px] backdrop-blur-[50px];
+    background: var(--color-glass-orange-bg);
+    border: 1px solid var(--color-glass-orange-border);
+    box-shadow: var(--color-glass-orange-shadow);
+  }
+
+  .bg-mode-segment-forward {
+    background-color: color-mix(in srgb, var(--color-accent-green) 35%, transparent);
+  }
+  .bg-mode-segment-no-tx {
+    background-color: color-mix(in srgb, var(--color-accent-red) 35%, transparent);
+  }
+}
