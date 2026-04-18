@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useSystemStore } from '@/stores/system';
 import { authClient } from '@/utils/api';
+import brokerTemplatesData from '@/assets/broker-templates.json';
 
 const systemStore = useSystemStore();
 
@@ -29,74 +30,7 @@ interface BrokerTemplate {
   brokers: Omit<CustomBroker, '_id'>[];
 }
 
-// {
-//     "name": "Europe (LetsMesh v1)",
-//     "host": "mqtt-eu-v1.letsmesh.net",
-//     "port": 443,
-//     "audience": "mqtt-eu-v1.letsmesh.net",
-//     "use_jwt_auth": True,
-// },
-// {
-//     "name": "US West (LetsMesh v1)",
-//     "host": "mqtt-us-v1.letsmesh.net",
-//     "port": 443,
-//     "audience": "mqtt-us-v1.letsmesh.net",
-//     "use_jwt_auth": True,
-// },
-
-const BROKER_TEMPLATES: BrokerTemplate[] = [
-  {
-    name: 'US West only (US v1)',
-    website: 'letsmesh.net',
-    brokers: [
-      {
-        enabled: true,
-        name: 'MeshMapper',
-        host: 'mqtt-us-v1.letsmesh.net',
-        port: 443,
-        audience: 'mqtt-us-v1.letsmesh.net',
-        use_jwt_auth: true,
-        format: 'letsmesh',
-        transport: 'websockets',
-        retain_status: false,
-      },
-    ],
-  },
-  {
-    name: 'Europe only (EU v1)',
-    website: 'letsmesh.net',
-    brokers: [
-      {
-        enabled: true,
-        name: 'MeshMapper',
-        host: 'mqtt-eu-v1.letsmesh.net',
-        port: 443,
-        audience: 'mqtt-eu-v1.letsmesh.net',
-        use_jwt_auth: true,
-        format: 'letsmesh',
-        transport: 'websockets',
-        retain_status: false,
-      },
-    ],
-  },
-  {
-    name: 'MeshMapper',
-    website: 'https://meshmapper.net',
-    brokers: [
-      {
-        enabled: true,
-        name: 'MeshMapper',
-        host: 'mqtt.meshmapper.cc',
-        port: 443,
-        audience: 'mqtt.meshmapper.cc',
-        use_jwt_auth: true,
-        format: 'letsmesh',
-        transport: 'websockets',
-        retain_status: false,
-      },
-    ],
-  },
-];
+const BROKER_TEMPLATES: BrokerTemplate[] = brokerTemplatesData as BrokerTemplate[];
 
 // ── custom broker type ────────────────────────────────────────────────────────
 interface CustomBroker {
