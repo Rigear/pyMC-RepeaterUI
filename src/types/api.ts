@@ -194,9 +194,12 @@ export interface SystemStats {
         password?: string;
         topic_prefix?: string;
         format: string;
-        tls?: object;
         disallowed_packet_types?: string[];
         retain_status?: boolean;
+        tls?: {
+          enabled?: boolean;
+          insecure?: boolean;
+        }
       }>;
     };
   };

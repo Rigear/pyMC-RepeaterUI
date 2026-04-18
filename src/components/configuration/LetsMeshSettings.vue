@@ -49,6 +49,10 @@ interface CustomBroker {
   transport: string;
   base_topic?: string;
   retain_status: boolean;
+  tls: {
+    enabled?: boolean;
+    insecure?: boolean;
+  }
 }
 
 // ── form state ────────────────────────────────────────────────────────────────
@@ -76,6 +80,10 @@ const brokerDraft = ref<CustomBroker>({
   transport: 'websockets',
   disallowedInput: [],
   retain_status: false,
+  tls: {
+    enabled: true,
+    insecure: false
+  },
 });
 const showTemplateMenu = ref(false);
 
@@ -99,11 +107,15 @@ function mkBroker(b: Partial<Omit<CustomBroker, '_id'>> = {}): CustomBroker {
     port: b.port ?? 0,
     audience: b.audience ?? '',
     format: b.format ?? 'letsmesh',
-    use_jwt_auth: b.use_jwt_auth ?? true,
+    use_jwt_auth: b.use_jwt_auth ?? false,
     transport: b.transport ?? 'websockets',
     disallowedInput: Array.isArray(b.disallowedInput) ? [...b.disallowedInput] : [],
     retain_status: b.retain_status ?? false,
     base_topic: b.base_topic ?? '',
+    tls: {
+      enabled: b.tls?.enabled ?? false,
+      insecure: b.tls?.insecure ?? false,
+    },
   };
 }
 
@@ -154,8 +166,6 @@ const brokerErrors = computed(() => {
     else if (!b.host.trim()) errors[b._id] = 'Host required';
     else if (b.use_jwt_auth && !b.audience?.trim())
       errors[b._id] = 'Audience required for JWT auth';
-    //else if (!b.use_jwt_auth && !b.username?.trim()) errors[b._id] = 'Username required';
-    //else if (!b.use_jwt_auth && !b.password?.trim()) errors[b._id] = 'Password required';
     else if (b.port < 1 || b.port > 65535) errors[b._id] = 'Port must be 1–65535';
   });
   return errors;
@@ -251,8 +261,8 @@ async function saveChanges() {
       email: emailInput.value,
       brokers: customBrokers.value.map((b) => {
         const base = {
-          enabled: b.enabled,
           name: b.name,
+          enabled: b.enabled,
           transport: b.transport,
           host: b.host,
           port: b.port,
@@ -261,6 +271,10 @@ async function saveChanges() {
           disallowed_packet_types: b.disallowedInput,
           base_topic: b.base_topic,
           retain_status: b.retain_status,
+          tls: {
+            enabled: b.tls?.enabled ?? false,
+            insecure: b.tls?.insecure ?? false,
+          },
         };
 
         if (b.use_jwt_auth) {
@@ -908,24 +922,57 @@ onMounted(fetchStatus);
                     />
                   </div>
                   <!-- Port -->
-                  <div>
-                    <label
-                      class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
-                    >
-                      Port <span class="text-red-500">*</span>
-                      <span class="font-normal text-content-muted dark:text-content-muted/60 ml-1"
-                        >(Usually 443 for Websockets, 1883 for TCP)</span
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="sm:col-span-2">
+                      <label
+                        class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
                       >
-                    </label>
-                    <input
-                      v-model.number="brokerDraft.port"
-                      type="number"
-                      min="0"
-                      max="65535"
-                      placeholder="0"
-                      class="w-full px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40 font-mono"
-                    />
+                        Port <span class="text-red-500">*</span>
+                        <span class="font-normal text-content-muted dark:text-content-muted/60 ml-1"
+                          >(Usually 443 for Websockets, 1883 for TCP)</span
+                        >
+                      </label>
+                      <input
+                        v-model.number="brokerDraft.port"
+                        type="number"
+                        min="0"
+                        max="65535"
+                        placeholder="0"
+                        class="w-full px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40 font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
+                      >
+                        TLS - Enabled <span class="text-red-500">*</span>
+                        <span class="font-normal text-content-muted dark:text-content-muted/60 ml-1"
+                          >(Enable TLS)</span
+                        >
+                      </label>
+                      <input
+                        v-model.number="brokerDraft.tls.enabled"
+                        type="checkbox"
+                        class="px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40 font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
+                      >
+                        TLS - Insecure<span class="text-red-500">*</span>
+                        <span class="font-normal text-content-muted dark:text-content-muted/60 ml-1"
+                          >(Allow insecure TLS connections)</span
+                        >
+                      </label>
+                      <input
+                        v-model.number="brokerDraft.tls.insecure"
+                        type="checkbox"
+                        class="px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40 font-mono"
+                      />
+                    </div>
                   </div>
+
                   <!-- use_jwt_auth -->
                   <div>
                     <label
@@ -970,7 +1017,7 @@ onMounted(fetchStatus);
                         autocomplete="current-password"
                         style="display: none"
                       />
-                      <div>
+                      <div class="sm:col-span-2">
                         <label
                           class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
                         >
@@ -989,7 +1036,7 @@ onMounted(fetchStatus);
                           class="w-full px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40"
                         />
                       </div>
-                      <div>
+                      <div class="sm:col-span-2">
                         <label
                           class="block text-xs font-medium text-content-secondary dark:text-content-muted mb-1"
                         >
