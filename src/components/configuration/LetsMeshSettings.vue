@@ -108,6 +108,8 @@ function mkBroker(b: Partial<Omit<CustomBroker, '_id'>> = {}): CustomBroker {
     audience: b.audience ?? '',
     format: b.format ?? 'letsmesh',
     use_jwt_auth: b.use_jwt_auth ?? false,
+    username: b.username ?? '',
+    password: b.password ?? '',
     transport: b.transport ?? 'websockets',
     disallowedInput: Array.isArray(b.disallowedInput) ? [...b.disallowedInput] : [],
     retain_status: b.retain_status ?? false,
@@ -1047,6 +1049,8 @@ onMounted(fetchStatus);
                           v-model="brokerDraft.password"
                           type="password"
                           placeholder=""
+                          readonly onfocus="this.removeAttribute('readonly');"
+                          onblur="this.setAttribute('readonly', true);"
                           class="w-full px-3 py-1.5 text-sm rounded-md bg-background-mute dark:bg-background/30 border border-stroke-subtle dark:border-stroke/20 text-content-primary dark:text-content-primary placeholder-content-muted dark:placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 dark:focus:ring-primary/40"
                         />
                       </div>
